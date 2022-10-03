@@ -73,6 +73,8 @@
     However, as usually, there are no ads, tracking or analytics whatsoever, the internet is used only for sending MMS.</string>
     <string name="faq_2_title">The other end is not receiving my MMS, is there anything I can do about it?</string>
     <string name="faq_2_text">MMS size is limited by carriers, you can try setting a smaller limit in the app settings.</string>
+    <string name="captcha_has_copied">Captcha has copied</string>
+    <string name="copy_captcha">copy captcha</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

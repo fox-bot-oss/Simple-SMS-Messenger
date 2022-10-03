@@ -203,6 +203,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".receivers.CaptchaReceiver" android:exported="false" />
+
         <receiver
             android:name=".receivers.DirectReplyReceiver"
             android:enabled="true"

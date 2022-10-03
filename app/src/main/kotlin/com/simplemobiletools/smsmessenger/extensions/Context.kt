@@ -34,6 +34,8 @@ import com.simplemobiletools.commons.models.PhoneNumber
 import com.simplemobiletools.commons.models.SimpleContact
 import com.simplemobiletools.smsmessenger.R
 import com.simplemobiletools.smsmessenger.activities.ThreadActivity
+import com.simplemobiletools.smsmessenger.captcha.CaptchaInfo
+import com.simplemobiletools.smsmessenger.captcha.CaptchaUtils
 import com.simplemobiletools.smsmessenger.databases.MessagesDatabase
 import com.simplemobiletools.smsmessenger.helpers.*
 import com.simplemobiletools.smsmessenger.interfaces.AttachmentsDao
@@ -41,6 +43,7 @@ import com.simplemobiletools.smsmessenger.interfaces.ConversationsDao
 import com.simplemobiletools.smsmessenger.interfaces.MessageAttachmentsDao
 import com.simplemobiletools.smsmessenger.interfaces.MessagesDao
 import com.simplemobiletools.smsmessenger.models.*
+import com.simplemobiletools.smsmessenger.receivers.CaptchaReceiver
 import com.simplemobiletools.smsmessenger.receivers.DirectReplyReceiver
 import com.simplemobiletools.smsmessenger.receivers.MarkAsReadReceiver
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -805,12 +808,28 @@ fun Context.showMessageNotification(address: String, body: String, threadId: Lon
         setSound(soundUri, AudioManager.STREAM_NOTIFICATION)
     }
 
-    if (replyAction != null && config.lockScreenVisibilitySetting == LOCK_SCREEN_SENDER_MESSAGE) {
-        builder.addAction(replyAction)
-    }
 
-    builder.addAction(R.drawable.ic_check_vector, getString(R.string.mark_as_read), markAsReadPendingIntent)
-        .setChannelId(NOTIFICATION_CHANNEL)
+
+    val captchaInfo: CaptchaInfo? = CaptchaUtils.getCaptchaInfo(body,sender)
+    if (captchaInfo != null && !captchaInfo.captcha.isNullOrEmpty()) {
+        val copyCaptchaIntent = Intent(this, CaptchaReceiver::class.java).apply {
+            action = MARK_AS_READ
+            putExtra(CAPTCHAS, captchaInfo.captcha)
+            putExtra(THREAD_ID, threadId)
+        }
+
+        val copyCaptchaPendingIntent =
+            PendingIntent.getBroadcast(this, threadId.hashCode(), copyCaptchaIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+        builder.addAction(R.drawable.ic_check_vector, getString(R.string.copy_captcha), copyCaptchaPendingIntent)
+            .setChannelId(NOTIFICATION_CHANNEL)
+    } else {
+        if (replyAction != null && config.lockScreenVisibilitySetting == LOCK_SCREEN_SENDER_MESSAGE) {
+            builder.addAction(replyAction)
+        }
+
+        builder.addAction(R.drawable.ic_check_vector, getString(R.string.mark_as_read), markAsReadPendingIntent)
+            .setChannelId(NOTIFICATION_CHANNEL)
+    }
 
     notificationManager.notify(threadId.hashCode(), builder.build())
 }

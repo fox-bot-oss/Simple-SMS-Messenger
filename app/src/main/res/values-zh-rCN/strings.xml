@@ -69,6 +69,8 @@
     <string name="faq_1_text">很遗憾这对于发送彩信附件是必须的。如果不能发送彩信的话这相比其他应用会是一个巨大的劣势，所以我们决定这么采取现在的方式。 但是和其他应用一样，不包含广告、追踪或者任意的分析工具， 互联网访问仅用于发送彩信。</string>
     <string name="faq_2_title">对方没有收到我的彩信，我能做些什么吗\?</string>
     <string name="faq_2_text">彩信大小受运营商限制，你可以尝试在程序设置中设定一个较小的限制。</string>
+    <string name="captcha_has_copied">验证码已复制</string>
+    <string name="copy_captcha">复制验证码</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

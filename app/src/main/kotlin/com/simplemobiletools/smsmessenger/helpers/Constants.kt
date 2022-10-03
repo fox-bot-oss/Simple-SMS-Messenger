@@ -4,6 +4,7 @@ import com.simplemobiletools.smsmessenger.models.Events
 import org.greenrobot.eventbus.EventBus
 
 const val THREAD_ID = "thread_id"
+const val CAPTCHAS = "captcha"
 const val THREAD_TITLE = "thread_title"
 const val THREAD_TEXT = "thread_text"
 const val THREAD_NUMBER = "thread_number"
